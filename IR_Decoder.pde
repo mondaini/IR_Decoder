@@ -42,9 +42,6 @@ void setup(void) {
   lcd.setCursor(0,0);
   lcd.print("Decodificador IR");
   lcd.setCursor(0,1);
-
-  //Serial.begin(9600);
-  //Serial.println("Ready to decode IR!");
 }
 
 void loop(void) {
@@ -56,33 +53,23 @@ void loop(void) {
   //TODO: Find a better solution for cleaning up the 2nd line of the lcd display
   lcd.print("                "); 
   lcd.setCursor(0,1);
-  
-  //Serial.print("Heard ");
-  //Serial.print(numberpulses);
-  //Serial.println("-pulse long IR signal");
-  
+   
   if (IRcompare(numberpulses, IRPlay)) {
-    //Serial.println("PLAY");   
     lcd.print("PLAY");       
   }
   if (IRcompare(numberpulses, IRBackward)) {
-    //Serial.println("REWIND");
     lcd.print("REWIND");
   }
   if (IRcompare(numberpulses, IRForward)) {
-    //Serial.println("FORWARD");
     lcd.print("FORWARD");
   }
   if (IRcompare(numberpulses, IRVolumePlus)) {
-    //Serial.println("VOLUME +");
     lcd.print("VOLUME +");
   }
   if (IRcompare(numberpulses, IRVolumeMinus)) {
-    //Serial.println("VOLUME -");
     lcd.print("VOLUME -");
   } 
   if (IRcompare(numberpulses, IRPower)) {
-    //Serial.println("POWER");
     lcd.print("POWER");
   }  
 }
@@ -132,29 +119,17 @@ int listenForIR(void) {
 }
 
 boolean IRcompare(int numpulses, int Signal[]) {
-
   for (int i=0; i< numpulses-1; i++) {
     int oncode = pulses[i][1] * RESOLUTION / 10;
     int offcode = pulses[i+1][0] * RESOLUTION / 10;
 
     // check to make sure the error is less than ERROR_MARGIN percent
-    if ( abs(oncode - Signal[i*2 + 0]) <= (Signal[i*2 + 0] * ERROR_MARGIN / 100)) {
-    } 
-    else {
-      // we didn't match perfectly, return a false match
+    if (!abs(oncode - Signal[i*2 + 0]) <= (Signal[i*2 + 0] * ERROR_MARGIN / 100)) {
       return false;
     }
-
-    if (abs(offcode - Signal[i*2 + 1]) <= (Signal[i*2 + 1] * ERROR_MARGIN / 100)) {
-      //Serial.print(" (ok)");
-    } 
-    else {
-      //Serial.print(" (x)");
-      // we didn't match perfectly, return a false match
+    if (!abs(offcode - Signal[i*2 + 1]) <= (Signal[i*2 + 1] * ERROR_MARGIN / 100)) {
       return false;
     }
-
-    //Serial.println();
   }
   // Everything matched!
   return true;
