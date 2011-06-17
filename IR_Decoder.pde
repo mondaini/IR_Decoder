@@ -124,10 +124,10 @@ boolean IRcompare(int numpulses, int Signal[]) {
     int offcode = pulses[i+1][0] * RESOLUTION / 10;
 
     // check to make sure the error is less than ERROR_MARGIN percent
-    if (!abs(oncode - Signal[i*2 + 0]) <= (Signal[i*2 + 0] * ERROR_MARGIN / 100)) {
+    if (!(abs(oncode - Signal[i*2 + 0]) <= (Signal[i*2 + 0] * ERROR_MARGIN / 100))) {
       return false;
     }
-    if (!abs(offcode - Signal[i*2 + 1]) <= (Signal[i*2 + 1] * ERROR_MARGIN / 100)) {
+    if (!(abs(offcode - Signal[i*2 + 1]) <= (Signal[i*2 + 1] * ERROR_MARGIN / 100))) {
       return false;
     }
   }
